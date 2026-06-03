@@ -17,8 +17,9 @@ package io.github.thibaultbee.streampack.screenrecorder.models
 
 enum class EndpointType(val id: Int) {
     SRT(0),
-    RTMP(1);
-
+    RTMP(1),
+    FILE(2);
+    
     companion object {
         fun fromId(id: Int): EndpointType = entries.first { it.id == id }
     }
