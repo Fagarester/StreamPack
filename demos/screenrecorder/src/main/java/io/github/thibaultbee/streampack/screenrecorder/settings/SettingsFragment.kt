@@ -146,8 +146,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val supportedVideoEncoderName =
             mapOf(
                 MediaFormat.MIMETYPE_VIDEO_AVC to getString(R.string.video_encoder_h264),
-                MediaFormat.MIMETYPE_VIDEO_HEVC to getString(R.string.video_encoder_h265),
-                MediaFormat.MIMETYPE_VIDEO_H263 to getString(R.string.video_encoder_h263)
+        MediaFormat.MIMETYPE_VIDEO_HEVC to getString(R.string.video_encoder_h265),
+        MediaFormat.MIMETYPE_VIDEO_H263 to getString(R.string.video_encoder_h263),
+        MediaFormat.MIMETYPE_VIDEO_AV1 to "AV1"
             )
 
         val supportedVideoEncoder = streamerInfo.video.supportedEncoders
