@@ -231,15 +231,25 @@ class MainActivity : AppCompatActivity() {
     private suspend fun startStream(streamer: IVideoStreamer<*>) {
         try {
             val descriptor = when (configuration.endpoint.type) {
-                EndpointType.SRT -> SrtMediaDescriptor(
-                    configuration.endpoint.srt.ip,
-                    configuration.endpoint.srt.port,
-                    configuration.endpoint.srt.streamID,
-                    configuration.endpoint.srt.passPhrase,
-                    serviceInfo = tsServiceInfo
-                )
+    EndpointType.SRT -> SrtMediaDescriptor(
+        configuration.endpoint.srt.ip,
+        configuration.endpoint.srt.port,
+        configuration.endpoint.srt.streamID,
+        configuration.endpoint.srt.passPhrase,
+        serviceInfo = tsServiceInfo
+    )
 
-                EndpointType.RTMP -> UriMediaDescriptor(configuration.endpoint.rtmp.url.toUri())
+    EndpointType.RTMP -> UriMediaDescriptor(configuration.endpoint.rtmp.url.toUri())
+
+    EndpointType.FILE -> {
+        val fileName = "ScreenRecord_${System.currentTimeMillis()}.mp4"
+        val file = java.io.File(
+            android.os.Environment.getExternalStoragePublicDirectory(
+                android.os.Environment.DIRECTORY_MOVIES
+            ), fileName
+        )
+        UriMediaDescriptor(file.toUri())
+    }
             }
 
             when (streamer) {
