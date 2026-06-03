@@ -150,12 +150,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
             )
 
         val supportedVideoEncoder = streamerInfo.video.supportedEncoders
-        videoEncoderListPreference.setDefaultValue(MediaFormat.MIMETYPE_VIDEO_AVC)
-        videoEncoderListPreference.entryValues = supportedVideoEncoder.toTypedArray()
-        videoEncoderListPreference.entries =
-            supportedVideoEncoder.map { supportedVideoEncoderName[it] }.toTypedArray()
+videoEncoderListPreference.setDefaultValue(MediaFormat.MIMETYPE_VIDEO_AVC)
+videoEncoderListPreference.entryValues = supportedVideoEncoder.toTypedArray()
+videoEncoderListPreference.entries =
+    supportedVideoEncoder.map { supportedVideoEncoderName[it] }.toTypedArray()
 
-        loadVideoSettings(videoEncoderListPreference.value)
+if (videoEncoderListPreference.value == null || !supportedVideoEncoder.contains(videoEncoderListPreference.value)) {
+    videoEncoderListPreference.value = supportedVideoEncoder.firstOrNull() ?: MediaFormat.MIMETYPE_VIDEO_AVC
+}
+videoEncoderListPreference.setOnPreferenceChangeListener { _, newValue ->
+    loadVideoSettings(newValue as String)
+    true
+}
+
+loadVideoSettings(videoEncoderListPreference.value)
     }
 
     private fun loadVideoSettings(encoder: String) {
