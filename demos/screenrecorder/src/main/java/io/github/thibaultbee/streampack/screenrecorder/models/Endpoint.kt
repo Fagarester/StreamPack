@@ -19,10 +19,12 @@ sealed class Endpoint(
     val hasTSCapabilities: Boolean,
     val hasFLVCapabilities: Boolean,
     val hasSrtCapabilities: Boolean,
-    val hasRtmpCapabilities: Boolean
+    val hasRtmpCapabilities: Boolean,
+    val hasFileCapabilities: Boolean
 ) {
-    class SrtEndpoint : Endpoint(true, false, true, false)
-    class RtmpEndpoint : Endpoint(false, true, false, true)
+    class SrtEndpoint : Endpoint(true, false, true, false, false)
+    class RtmpEndpoint : Endpoint(false, true, false, true, false)
+    class FileEndpoint : Endpoint(false, false, false, false, true)
 }
 
 class EndpointFactory(private val type: EndpointType) {
@@ -30,6 +32,7 @@ class EndpointFactory(private val type: EndpointType) {
         return when (type) {
             EndpointType.SRT -> Endpoint.SrtEndpoint()
             EndpointType.RTMP -> Endpoint.RtmpEndpoint()
+            EndpointType.FILE -> Endpoint.FileEndpoint()
         }
     }
 }
