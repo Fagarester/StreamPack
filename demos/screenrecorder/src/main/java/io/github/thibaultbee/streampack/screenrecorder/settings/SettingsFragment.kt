@@ -15,6 +15,7 @@
  */
 package io.github.thibaultbee.streampack.screenrecorder.settings
 
+import io.github.thibaultbee.streampack.core.elements.endpoints.composites.muxers.mp4.MP4MuxerInfo
 import android.media.AudioFormat
 import android.media.MediaFormat
 import android.os.Bundle
@@ -130,13 +131,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         // Update supported values with a new info
         streamerInfo = when (endpointType) {
-            EndpointType.SRT -> StreamerConfigurationInfo(CompositeEndpoint.EndpointInfo(TSMuxerInfo))
-            EndpointType.RTMP -> StreamerConfigurationInfo(
-                CompositeEndpoint.EndpointInfo(
-                    FlvMuxerInfo
-                )
-            )
-        }
+    EndpointType.SRT -> StreamerConfigurationInfo(CompositeEndpoint.EndpointInfo(TSMuxerInfo))
+    EndpointType.RTMP -> StreamerConfigurationInfo(CompositeEndpoint.EndpointInfo(FlvMuxerInfo))
+    EndpointType.FILE -> StreamerConfigurationInfo(CompositeEndpoint.EndpointInfo(MP4MuxerInfo))
+}
         loadVideoSettings()
         loadAudioSettings()
     }
@@ -263,10 +261,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private fun loadEndpoint() {
         // Inflates endpoint
         val supportedEndpointName =
-            mapOf(
-                EndpointType.SRT to getString(R.string.to_srt),
-                EndpointType.RTMP to getString(R.string.to_rtmp),
-            )
+    mapOf(
+        EndpointType.SRT to getString(R.string.to_srt),
+        EndpointType.RTMP to getString(R.string.to_rtmp),
+        EndpointType.FILE to "Save to file",
+    )
         val supportedEndpoint = EndpointType.entries.map { "${it.id}" }.toTypedArray()
         endpointTypePreference.setDefaultValue(EndpointType.SRT.id)
         endpointTypePreference.entryValues = supportedEndpoint
