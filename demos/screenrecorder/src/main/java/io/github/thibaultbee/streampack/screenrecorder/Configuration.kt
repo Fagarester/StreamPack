@@ -53,9 +53,8 @@ class Configuration(context: Context) {
     }
 
     class Audio(private val sharedPref: SharedPreferences, private val resources: Resources) {
-        var encoder: String = MediaFormat.MIMETYPE_AUDIO_AAC
-            get() = sharedPref.getString(resources.getString(R.string.audio_encoder_key), field)!!
-
+        var encoder: String = MediaFormat.MIMETYPE_VIDEO_AV1
+    get() = MediaFormat.MIMETYPE_VIDEO_AV1
         var numberOfChannels: Int = 2
             get() = sharedPref.getString(
                 resources.getString(R.string.audio_number_of_channels_key),
