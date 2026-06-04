@@ -121,23 +121,28 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     private fun setEndpointType(id: Int) {
+    try {
         val endpointType = EndpointType.fromId(id)
-        val endpoint = EndpointFactory(
-            endpointType
-        ).build()
+        val endpoint = EndpointFactory(endpointType).build()
         srtEndpointPreference.isVisible = endpoint.hasSrtCapabilities
         rtmpEndpointPreference.isVisible = endpoint.hasRtmpCapabilities
         tsMuxerPreference.isVisible = endpoint.hasTSCapabilities
 
-        // Update supported values with a new info
         streamerInfo = when (endpointType) {
-    EndpointType.SRT -> StreamerConfigurationInfo(CompositeEndpoint.EndpointInfo(TSMuxerInfo))
-    EndpointType.RTMP -> StreamerConfigurationInfo(CompositeEndpoint.EndpointInfo(FlvMuxerInfo))
-    EndpointType.FILE -> StreamerConfigurationInfo(CompositeEndpoint.EndpointInfo(MP4MuxerInfo))
-}
+            EndpointType.SRT -> StreamerConfigurationInfo(CompositeEndpoint.EndpointInfo(TSMuxerInfo))
+            EndpointType.RTMP -> StreamerConfigurationInfo(CompositeEndpoint.EndpointInfo(FlvMuxerInfo))
+            EndpointType.FILE -> StreamerConfigurationInfo(CompositeEndpoint.EndpointInfo(MP4MuxerInfo))
+        }
         loadVideoSettings()
         loadAudioSettings()
+    } catch (e: Exception) {
+        android.widget.Toast.makeText(
+            requireContext(),
+            "Error: ${e.javaClass.simpleName}: ${e.message}",
+            android.widget.Toast.LENGTH_LONG
+        ).show()
     }
+}
 
     private fun loadVideoSettings() {
         // Inflates video encoders
